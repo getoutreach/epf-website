@@ -9,6 +9,8 @@ orange-color = #F96A2A
 green-color = #66CA71
 light-color = #FFFBF8
 
+@import 'syntax'
+
 width = 960px
 sans-font = 'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif
 title-font = 'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif
@@ -19,7 +21,14 @@ a
   color: darken(orange-color, 5%)
 
   
+pre, code
+  font-family mono-font
 
+pre.highlight
+  background light-color
+  border-radius 4px
+  padding: 12px
+  border 1px solid darken(light-color, 5%)
 
 button(button-color)
   color #fff
@@ -34,8 +43,7 @@ button(button-color)
 
   &:hover
     text-decoration inherit
-
-
+    background lighten(button-color, 10%)
 
 
 html, body
@@ -71,11 +79,11 @@ html, body
 
   li
     display: inline
+    margin-left 12px
 
   a
     color inherit
     text-decoration none
-    margin-left 12px
 
     &:hover
       text-decoration underline
@@ -141,3 +149,9 @@ section.bullets
           display: inline-block
           position: absolute
           left: -42px
+
+section.resource
+  width width
+  margin auto
+
+@import 'migrating'

@@ -5,5 +5,8 @@ source 'http://rubygems.org'
 gem "middleman", "~>3.0.13"
 gem "middleman-livereload"
 gem 'middleman-gh-pages'
+gem 'middleman-syntax'
+
+gem 'redcarpet'
 
 gem 'stylus'

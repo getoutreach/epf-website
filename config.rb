@@ -9,6 +9,14 @@ Stylus.use :nib
 
 activate :livereload
 
+
+activate :syntax
+
+require "redcarpet"
+set :markdown, :tables => true, :autolink => true, :gh_blockcode => true, :fenced_code_blocks => true
+set :markdown_engine, :redcarpet
+
+
 # Susy grids in Compass
 # First: gem install susy
 # require 'susy'
