@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <title>Getting Started with EPF</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href='/img/favicon.png' rel='icon'>
+    <link href='/img/favicon@2x.png' rel='icon' sizes='32x32'>
+    <link href='css/main.css' rel='stylesheet'>
+    <link href='css/typicons.css' rel='stylesheet'>
+    <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+    <body>
+      <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+      <![endif]-->
+      <header id='masthead'>
+        <div class='inner'>
+          <h1><a href="/">Ember.js Persistence Foundation</a></h1>
+          <nav>
+            <ul>
+              <li><a href="/getting_started.html">Getting Started</a></li>
+              <li><a href="/migrating_from_ember_data.html">Migrating From Ember-Data</a></li>
+              <li><a class="download" href="#">Download</a></li>
+              <li>
+                          <a class="github" href="http://github.com/GroupTalent/epf"><i class='typcn-social-github'></i>
+                </a>
+      
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <section class='resource'>
+        <h1>Getting Started</h1>
+        
+        <h2>Installation</h2>
+        
+        <p>Download the latest version of Epf from the <a href="#">releases</a> page. Insert Epf into the webpage after Ember.js:</p>
+        <pre class="highlight html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;ember.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>&#x000A;<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;Epf.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></pre>
+        <p>Epf is also available via <a href="#">npm</a>.</p>
+        
+        <h2>Overview</h2>
+        
+        <p>Before getting started, it is helpful to understand how Epf aligns with the rest of the Ember.js ecosystem. If you have spent any time reading the <a href="http://emberjs.com/guides/models/">Ember.js guides</a>, you are undoubtedly aware of <a href="https://github.com/emberjs/data">Ember Data</a>. For all intensive purposes, Epf is a full alternative to Ember Data. To assist in translating any of the guides to Epf, see the <a href="/migrating_from_ember_data.html">migrating from Ember Data</a> section.</p>
+        
+        <p>Epf is essentially an <a href="https://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a> for the web and gives you all the tools necessary to define models and synchronize with your backend. Unlike other solutions, Epf is built around strong primitives for keeping your app in sync with the server. Currently, the focus of Epf is on REST backends, however out of the box support for streaming technologies is on the roadmap.</p>
+        
+        <h3>Defining Models</h3>
+        
+        <p>All models within Epf are subclasses of <code>Ep.Model</code>. For example:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">Post</span> <span class="o">=</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;  <span class="na">title</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;  <span class="na">body</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;&#x000A;  <span class="na">comments</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">Comment</span><span class="p">),</span>&#x000A;  <span class="na">user</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">belongsTo</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">User</span><span class="p">)</span>&#x000A;<span class="p">});</span></pre>
+        <h3>Loading Data</h3>
+        
+        <p>Similarly to Ember Data, model classes have a <code>find</code> method:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;&#x000A;  <span class="na">model</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>&#x000A;    <span class="k">return</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Post</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">post_id</span><span class="p">);</span>&#x000A;  <span class="p">}</span>&#x000A;&#x000A;<span class="p">});</span></pre>
+        <p>In general, however, it is discouraged to interact directly with the models and their classes. Instead, the primary means of interacting with Epf is through a <code>session</code>. Epf automatically injects a primary session into all routes and controllers. Using a session, the above code is functionally equivalent to:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;&#x000A;  <span class="na">model</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>&#x000A;    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">post_id</span><span class="p">);</span>&#x000A;  <span class="p">}</span>&#x000A;&#x000A;<span class="p">});</span></pre>
+        <p>By default, Ember.js will automatically call the <code>find</code> method, so the above route can actually be simplified to:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;  <span class="c1">// no model method required, Ember.js will automatically call `find` on `App.Post`&#x000A;</span><span class="p">});</span></pre>
+        <p>The session object also has other methods for finding data such as <code>query</code>.</p>
+        
+        <h3>Mutating Models</h3>
+        
+        <p>To mutate models, simply modify their properties:</p>
+        <pre class="highlight javascript"><span class="nx">post</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'updated title'</span><span class="p">;</span></pre>
+        <p>To persist changes to the backend, simply call the <code>flush</code> method on the session object.</p>
+        <pre class="highlight javascript"><span class="nx">post</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'updated title'</span><span class="p">;</span>&#x000A;<span class="nx">session</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span></pre>
+        <p>In Epf, most things are promises. In the above example you could listen for when the flush has completed using the promise API:</p>
+        <pre class="highlight javascript"><span class="nx">post</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'updated title'</span><span class="p">;</span>&#x000A;<span class="nx">session</span><span class="p">.</span><span class="nx">flush</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">models</span><span class="p">)</span> <span class="p">{</span>&#x000A;  <span class="c1">// this will be reached if the flush is successful&#x000A;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">models</span><span class="p">)</span> <span class="p">{</span>&#x000A;  <span class="c1">// this will be reached only if there are errors&#x000A;</span><span class="p">});</span></pre>
+        <h3>Handling Errors</h3>
+        
+        <p>Sessions can be flushed at any point (even if other flushes are pending) and re-trying errors is as simple as performing another flush:</p>
+        <pre class="highlight javascript"><span class="nx">post</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'updated title'</span><span class="p">;</span>&#x000A;<span class="nx">session</span><span class="p">.</span><span class="nx">flush</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>&#x000A;  <span class="c1">// the reject promise callback will be invoked on error&#x000A;</span><span class="p">});</span>&#x000A;&#x000A;<span class="c1">// do something here that should correct the error (e.g. fix validations)&#x000A;</span>&#x000A;<span class="nx">session</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span> <span class="c1">// flush again&#x000A;</span></pre>
+        <p>Models also have an <code>errors</code> property which will be populated when the backend returns errors.</p>
+        
+        <h3>Transactional Semantics and Forked Records</h3>
+        
+        <p>Changes can be isolated easily using child sessions:</p>
+        <pre class="highlight javascript"><span class="kd">var</span> <span class="nx">post</span> <span class="o">=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">Post</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>&#x000A;&#x000A;<span class="kd">var</span> <span class="nx">childSession</span> <span class="o">=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">newSession</span><span class="p">();</span> <span class="c1">// this creates a &quot;child&quot; session&#x000A;</span>&#x000A;<span class="kd">var</span> <span class="nx">childPost</span> <span class="o">=</span> <span class="nx">childSession</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">Post</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// this record instance is separate from its corresponding instance in the parent session&#x000A;</span>&#x000A;<span class="nx">post</span> <span class="o">===</span> <span class="nx">childPost</span><span class="p">;</span> <span class="c1">// returns false, they are separate instances&#x000A;</span><span class="nx">post</span><span class="p">.</span><span class="nx">isEqual</span><span class="p">(</span><span class="nx">childPost</span><span class="p">);</span> <span class="c1">// this will return true&#x000A;</span>&#x000A;<span class="nx">childPost</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'something'</span><span class="p">;</span> <span class="c1">// this will not affect `post`&#x000A;</span>&#x000A;<span class="nx">childSession</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span> <span class="c1">// this will flush changes both to the backend and the parent session, at this point `post` will have its title updated to reflect `childPost`&#x000A;</span></pre>
+      </section>
+      <footer id='mastfoot'>
+        <p>&copy; 2013 <a href="https://grouptalent.com">GroupTalent</a></p>
+      </footer>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+      <script src="js/plugins.js"></script>
+      <script src="js/main.js"></script>
+      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+      <script>
+        var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g,s)}(document,'script'));
+      </script>
+    </body>
+  </head>
+</html>
+

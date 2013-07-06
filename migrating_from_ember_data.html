@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <title>Migrating from Ember Data to EPF</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href='/img/favicon.png' rel='icon'>
+    <link href='/img/favicon@2x.png' rel='icon' sizes='32x32'>
+    <link href='css/main.css' rel='stylesheet'>
+    <link href='css/typicons.css' rel='stylesheet'>
+    <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+    <body>
+      <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+      <![endif]-->
+      <header id='masthead'>
+        <div class='inner'>
+          <h1><a href="/">Ember.js Persistence Foundation</a></h1>
+          <nav>
+            <ul>
+              <li><a href="/getting_started.html">Getting Started</a></li>
+              <li><a href="/migrating_from_ember_data.html">Migrating From Ember-Data</a></li>
+              <li><a class="download" href="#">Download</a></li>
+              <li>
+                          <a class="github" href="http://github.com/GroupTalent/epf"><i class='typcn-social-github'></i>
+                </a>
+      
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <section class='resource'>
+        <h1>Migrating from Ember Data</h1>
+        
+        <p>Epf was built by people who have extensive Ember Data experience. Many of the API&#39;s and conventions are heavily inspired by Ember Data if not directly based.</p>
+        
+        <h2>Models</h2>
+        
+        <p>Unlike Ember Data, there is no state machine backing each model. This means there will be no more <a href="https://github.com/emberjs/data/issues/1024">pesky error messages</a> related to <code>willCommit</code>.</p>
+        
+        <p>A loose analogy is that Epf uses an MVCC write system while Ember Data uses locks. In Epf <strong>you can modify models and their relationships any time.</strong> This includes while models are in transit to the server. Moreover, multiple instance of the same logical model can exist at the same time. This is premise behind Epf&#39;s merging and isolation logic.</p>
+        
+        <p>Defining models in Epf is almost 1-1 with Ember Data. Porting over model definitions is as simple as changing the namespace:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">Post</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;  <span class="na">title</span><span class="p">:</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;  <span class="na">body</span><span class="p">:</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;&#x000A;  <span class="na">comments</span><span class="p">:</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">Comment</span><span class="p">),</span>&#x000A;  <span class="na">user</span><span class="p">:</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">belongsTo</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">User</span><span class="p">)</span>&#x000A;<span class="p">});</span></pre>
+        <p>becomes:</p>
+        <pre class="highlight javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">Post</span> <span class="o">=</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>&#x000A;  <span class="na">title</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;  <span class="na">body</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'string'</span><span class="p">),</span>&#x000A;&#x000A;  <span class="na">comments</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">hasMany</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">Comment</span><span class="p">),</span>&#x000A;  <span class="na">user</span><span class="p">:</span> <span class="nx">Ep</span><span class="p">.</span><span class="nx">belongsTo</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">User</span><span class="p">)</span>&#x000A;<span class="p">});</span></pre>
+        <h2>REST Backends</h2>
+        
+        <p>The default conventions around the expect JSON format (including sideloading etc.) is a superset of what Ember Data expects. If you are currently using Ember Data <strong>your existing backend should require little to no modification.</strong></p>
+        
+        <h2>What About the Store and Transactions?</h2>
+        
+        <p>There is currently no store in Epf. The closest construct are sessions. Sessions are the primary means of interacting with Epf and, in practice, many of it&#39;s methods correspond to methods on the store. See the table in the next section for more detail.</p>
+        
+        <p>Transactions in Ember Data are an extremely overloaded concept. In practice, transactions in Ember Data do not provide any transactional guarantees and are simply used to group operations. Instead of transactions, Epf has the notion of <em>child sessions</em>.</p>
+        
+        <p>Child sessions can be used to fork records and achieve change isolation. Below are two rough comparison code samples:</p>
+        <pre class="highlight javascript"><span class="kd">var</span> <span class="nx">transaction</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">transaction</span><span class="p">();</span>&#x000A;<span class="nx">transaction</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>&#x000A;<span class="nx">post</span><span class="p">.</span><span class="nx">tite</span> <span class="o">=</span> <span class="s1">'new title'</span><span class="p">;</span>&#x000A;<span class="nx">transaction</span><span class="p">.</span><span class="nx">commit</span><span class="p">();</span></pre>
+        <p>Versus:</p>
+        <pre class="highlight javascript"><span class="kd">var</span> <span class="nx">childSession</span> <span class="o">=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">newSession</span><span class="p">();</span>&#x000A;<span class="kd">var</span> <span class="nx">childPost</span> <span class="o">=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>&#x000A;<span class="nx">childPost</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s1">'new title'</span><span class="p">;</span>&#x000A;<span class="nx">childSession</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span></pre>
+        <p>Unlike transactions, child sessions can be flushed multiple times and have robust ways of handling errors.</p>
+        
+        <h2>Table of Functional Equivalence</h2>
+        
+        <p>Below is a rudimentary mapping of some Epf methods, their intended use, and the closest corresponding Ember Data equivalent:</p>
+        
+        <table class="mappings">
+        <tr>
+        <th>Epf Code</th>
+        <th>Use Case</th>
+        <th>Ember Data Equivalent</th>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.load()&#x000A;session.find()</pre></td>
+        <td>Loads a single model from the server.</td>
+        <td><pre>store.find()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.query()</pre></td>
+        <td>Loads a collection of models from the server based on a query.</td>
+        <td><pre>store.findQuery()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.flush()</pre></td>
+        <td>Loads a collection of models from the server based on a query.</td>
+        <td><pre>store.commit()&#x000A;transaction.commit()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.newSession()</pre></td>
+        <td>Creates a child session.</td>
+        <td><pre>store.transaction()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.add()</pre></td>
+        <td>Adds a model to a session.</td>
+        <td><pre>transaction.add()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.create()</pre></td>
+        <td>Creates a model inside the session.</td>
+        <td><pre>store.createRecord()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.deleteModel()</pre></td>
+        <td>Deletes and removes a model from the session.</td>
+        <td><pre>store.deleteRecord()&#x000A;model.deleteRecord()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.remoteCall()</pre></td>
+        <td>Calls a remote method on the server</td>
+        <td>N/A</td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.merge()</pre></td>
+        <td>Merges in data from the server.</td>
+        <td><pre>store.load()</pre></td>
+        </tr>
+        
+        
+        <tr>
+        <td><pre>session.refresh()</pre></td>
+        <td>Reloads data from the server and updates the model.</td>
+        <td><pre>store.reloadModel()</pre></td>
+        </tr>
+        
+        
+        
+        
+        </table>
+      </section>
+      <footer id='mastfoot'>
+        <p>&copy; 2013 <a href="https://grouptalent.com">GroupTalent</a></p>
+      </footer>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+      <script src="js/plugins.js"></script>
+      <script src="js/main.js"></script>
+      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+      <script>
+        var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g,s)}(document,'script'));
+      </script>
+    </body>
+  </head>
+</html>
+
