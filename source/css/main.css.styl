@@ -1,0 +1,143 @@
+@import 'normalize'
+@import 'default'
+
+@import 'nib'
+
+main-color = #4C1315
+red-color = #C94B40
+orange-color = #F96A2A
+green-color = #66CA71
+light-color = #FFFBF8
+
+width = 960px
+sans-font = 'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif
+title-font = 'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif
+serif-font = georgia, times, serif
+mono-font = 'Source Code Pro', 'Andale Mono', monospace !default
+
+a
+  color: darken(orange-color, 5%)
+
+  
+
+
+button(button-color)
+  color #fff
+  background button-color
+  text-decoration: none
+  font-weight: bold
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5)
+  padding: 8px 16px
+  border-radius: 4px
+  border 1px solid darken(button-color, 25%)
+  font-size: 18px
+
+  &:hover
+    text-decoration inherit
+
+
+
+
+html, body
+  font-family sans-font
+  color main-color
+
+#masthead
+  background: red-color
+  color white
+  line-height 56px
+  height 56px
+
+  .inner
+    width width
+    margin auto
+    clearfix()
+
+  .download
+    button(orange-color)
+    padding: 4px 8px
+    font-size: 14px
+
+  h1
+    line-height: 56px
+    margin 0
+    font-size: 24px
+    float left
+
+  ul
+    float right
+    margin 0
+    padding 0
+
+  li
+    display: inline
+
+  a
+    color inherit
+    text-decoration none
+    margin-left 12px
+
+    &:hover
+      text-decoration underline
+
+  .github
+    padding-top: 4px
+    display: inline-block
+    vertical-align: middle
+    i
+      font-size: 32px
+
+#mastfoot
+  text-align: center
+
+section.intro
+  text-align: center
+  width width
+  margin auto
+
+  .download
+    button(green-color)
+
+  img
+    margin-bottom: 24px
+
+
+  h2
+    text-align center
+    font-size 32px
+
+section.bullets
+  margin-top 48px
+  padding-bottom 36px
+  border-top 1px solid darken(light-color, 5%)
+  border-bottom 1px solid darken(light-color, 5%)
+  background light-color
+
+  .inner
+    width width
+    margin auto
+
+    h3
+      text-align center
+      margin-top: 24px
+      font-size: 24px
+
+    ul
+      padding-let: 42px
+      width: 65%
+      margin: auto
+      li
+        font-weight: 300
+        font-size: 24px
+        list-style: none
+        margin: 16px 0
+        position: relative
+
+        i
+          color: lighten(main-color, 25%)
+          font-size: 32px
+          width: 42px
+          text-align: center
+          display: inline-block
+          position: absolute
+          left: -42px
