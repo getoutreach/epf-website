@@ -11,7 +11,7 @@ Epf was built by people who have extensive Ember Data experience. Many of the AP
 
 Unlike Ember Data, there is no state machine backing each model. This means there will be no more [pesky error messages](https://github.com/emberjs/data/issues/1024) related to `willCommit`.
 
-A loose analogy is that Epf uses an MVCC write system while Ember Data uses locks. In Epf **you can modify models and their relationships any time.** This includes while models are in transit to the server. Moreover, multiple instance of the same logical model can exist at the same time. This is premise behind Epf's merging and isolation logic.
+A loose analogy is that Epf uses an MVCC write system while Ember Data uses locks. In Epf **you can modify models and their relationships any time.** This includes while models are in transit to the server. Moreover, multiple instance of the same logical model can exist at the same time. This is the premise behind Epf's merging and isolation logic.
 
 Defining models in Epf is almost 1-1 with Ember Data. Porting over model definitions is as simple as changing the namespace:
 
@@ -43,7 +43,7 @@ The default conventions around the expect JSON format (including sideloading etc
 
 ## What About the Store and Transactions?
 
-There is currently no store in Epf. The closest construct are sessions. Sessions are the primary means of interacting with Epf and, in practice, many of it's methods correspond to methods on the store. See the table in the next section for more detail.
+There is currently no store in Epf. The closest construct are sessions. Sessions are the primary means of interacting with Epf and, in practice, many of its methods correspond to methods on the store. See the table in the next section for more detail.
 
 Transactions in Ember Data are an extremely overloaded concept. In practice, transactions in Ember Data do not provide any transactional guarantees and are simply used to group operations. Instead of transactions, Epf has the notion of *child sessions*.
 
