@@ -10,3 +10,5 @@ gem 'middleman-syntax'
 gem 'redcarpet'
 
 gem 'stylus'
+
+gem 'json'

@@ -14,7 +14,7 @@ Download the latest version of Epf from the [releases](#) page. Insert Epf into 
 <script type="text/javascript" src="Epf.js"></script>
 ```
 
-Epf is also available via [npm](#).
+Epf is also available via [npm](https://npmjs.org/package/epf).
 
 ## Overview
 

@@ -10,9 +10,8 @@
 # Ignore the build directory
 /build
 
-# Ignore Sass' cache
-/.sass-cache
-
 node_modules
 
 .DS_Store
+
+tmp

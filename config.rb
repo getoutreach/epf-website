@@ -17,6 +17,9 @@ set :markdown, :tables => true, :autolink => true, :gh_blockcode => true, :fence
 set :markdown_engine, :redcarpet
 
 
+require 'lib/template_helpers'
+helpers TemplateHelpers
+
 # Susy grids in Compass
 # First: gem install susy
 # require 'susy'
