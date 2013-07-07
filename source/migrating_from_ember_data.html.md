@@ -97,7 +97,7 @@ session.find()</pre></td>
 
 <tr>
 <td><pre>session.flush()</pre></td>
-<td>Loads a collection of models from the server based on a query.</td>
+<td>Persists all pending changes to the server.</td>
 <td><pre>store.commit()
 transaction.commit()</pre></td>
 </tr>
