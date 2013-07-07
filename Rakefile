@@ -1,8 +1,6 @@
 require 'middleman-gh-pages'
 require 'rubygems'
-require 'zip'
 require 'json'
-
 
 desc 'update release files from npm'
 task :update_release do
