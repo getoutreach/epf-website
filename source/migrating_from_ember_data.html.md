@@ -52,7 +52,7 @@ Child sessions can be used to fork records and achieve change isolation. Below a
 ```javascript
 var transaction = store.transaction();
 transaction.add(post);
-post.tite = 'new title';
+post.title = 'new title';
 transaction.commit();
 ```
 
