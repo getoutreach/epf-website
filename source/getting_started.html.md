@@ -18,7 +18,7 @@ Epf is also available via [npm](https://npmjs.org/package/epf).
 
 ## Overview
 
-Before getting started, it is helpful to understand how Epf aligns with the rest of the Ember.js ecosystem. If you have spent any time reading the [Ember.js guides](http://emberjs.com/guides/models/), you are undoubtedly aware of [Ember Data](https://github.com/emberjs/data). For all intensive purposes, Epf is a full alternative to Ember Data. To assist in translating any of the guides to Epf, see the [migrating from Ember Data](migrating_from_ember_data.html) section.
+Before getting started, it is helpful to understand how Epf aligns with the rest of the Ember.js ecosystem. If you have spent any time reading the [Ember.js guides](http://emberjs.com/guides/models/), you are undoubtedly aware of [Ember Data](https://github.com/emberjs/data). For all intents and purposes, Epf is a full alternative to Ember Data. To assist in translating any of the guides to Epf, see the [migrating from Ember Data](migrating_from_ember_data.html) section.
 
 Epf is essentially an [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for the web and gives you all the tools necessary to define models and synchronize with your backend. Unlike other solutions, Epf is built around strong primitives for keeping your app in sync with the server. Currently, the focus of Epf is on REST backends, but out of the box support for streaming technologies is on the roadmap.
 
