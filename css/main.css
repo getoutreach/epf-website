@@ -727,9 +727,6 @@ section.intro .download:hover {
   text-decoration: inherit;
   background: #75cf7f;
 }
-section.intro img {
-  margin-bottom: 24px;
-}
 section.intro h2 {
   text-align: center;
   font-size: 32px;
@@ -774,6 +771,18 @@ section.bullets .inner ul li i {
 section.resource {
   width: 960px;
   margin: auto;
+}
+section.graph {
+  margin-top: 48px;
+  padding-bottom: 36px;
+  width: 960px;
+  margin: auto;
+  text-align: center;
+}
+section.graph h3 {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 24px;
 }
 table.mappings {
   width: 100%;
