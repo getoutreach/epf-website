@@ -77,13 +77,13 @@ The session object also has other methods for finding data such as `query`.
 To mutate models, simply modify their properties:
 
 ```javascript
-post.title = 'updated title';
+post.set('title', 'updated title');
 ```
 
 To persist changes to the backend, simply call the `flush` method on the session object.
 
 ```javascript
-post.title = 'updated title';
+post.set('title', 'updated title');
 session.flush();
 ```
 
@@ -91,7 +91,7 @@ In Epf, most things are promises. In the above example you could listen for when
 
 
 ```javascript
-post.title = 'updated title';
+post.set('title', 'updated title');
 session.flush().then(function(models) {
   // this will be reached if the flush is successful
 }, function(models) {
@@ -104,7 +104,7 @@ session.flush().then(function(models) {
 Sessions can be flushed at any point (even if other flushes are pending) and re-trying errors is as simple as performing another flush:
 
 ```javascript
-post.title = 'updated title';
+post.set('title', 'updated title');
 session.flush().then(null, function() {
   // the reject promise callback will be invoked on error
 });
@@ -130,7 +130,7 @@ var childPost = childSession.load(App.Post, 1); // this record instance is separ
 post === childPost; // returns false, they are separate instances
 post.isEqual(childPost); // this will return true
 
-childPost.title = 'something'; // this will not affect `post`
+childPost.set('title', 'something'); // this will not affect `post`
 
 childSession.flush(); // this will flush changes both to the backend and the parent session, at this point `post` will have its title updated to reflect `childPost`
 ```

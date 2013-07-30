@@ -52,7 +52,7 @@ Child sessions can be used to fork records and achieve change isolation. Below a
 ```javascript
 var transaction = store.transaction();
 transaction.add(post);
-post.title = 'new title';
+post.set('title', 'new title');
 transaction.commit();
 ```
 
@@ -60,8 +60,8 @@ Versus:
 
 ```javascript
 var childSession = session.newSession();
-var childPost = session.add(post);
-childPost.title = 'new title';
+var childPost = childSession.add(post);
+childPost.set('title', 'new title');
 childSession.flush();
 ```
 
