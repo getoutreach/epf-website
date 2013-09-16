@@ -41,6 +41,11 @@ App.Post = Ep.Model.extend({
 
 The default conventions around the expect JSON format (including sideloading etc.) is a superset of what Ember Data expects. If you are currently using Ember Data **your existing backend should require little to no modification.**
 
+There are two differences however:
+
+* EPF sets a `client_id` in the JSON for every model and expects this to be echoed back by the server. It uses this to keep it's internal idmap up to date.
+* Related keys still need to use _id and _ids (this is different from ember-data 1.0 beta 2)
+
 ## What About the Store and Transactions?
 
 There is currently no store in Epf. The closest construct are sessions. Sessions are the primary means of interacting with Epf and, in practice, many of its methods correspond to methods on the store. See the table in the next section for more detail.
